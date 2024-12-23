@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Input Mahasiswa</title>
+    <style>
+        /* Body dengan gradasi warna yang lebih elegan dan minimalis */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #2b2b2b, #4e4e4e);
+            color: #ecf0f1;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        /* Form container dengan latar belakang gelap dan border putih tipis */
+        .form-container {
+            background: #333;
+            border-radius: 8px;
+            padding: 30px 40px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 480px;
+            margin-bottom: 30px;
+        }
+
+        form label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #ecf0f1;
+        }
+
+        /* Styling input, select, textarea, dan tombol */
+        form input[type="text"],
+        form select,
+        form textarea,
+        form button {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #555;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #444;
+            color: #ecf0f1;
+            transition: all 0.3s ease;
+        }
+
+        /* Efek saat input fokus */
+        form input[type="text"]:focus,
+        form select:focus,
+        form textarea:focus {
+            border-color: #3498db;
+            outline: none;
+            background: #333;
+        }
+
+        /* Tombol dengan desain minimalis */
+        form button {
+            background: #3498db;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover effect pada tombol */
+        form button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Pesan error dengan teks merah */
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: -10px;
+        }
+
+        /* Table styling dengan warna gelap dan minimalis */
+        table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            background: #444;
+            color: #ecf0f1;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        th {
+            background: #555;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        tr:nth-child(even) {
+            background: #333;
+        }
+
+        tr:hover {
+            background: #555;
+        }
+
+        td {
+            border-bottom: 1px solid #666;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+
+
+    <h1>Form Input Mahasiswa</h1>
+
+    <div class="form-container">
+        <form id="mahasiswaForm" action="proses.php" method="POST" onsubmit="return validateForm(event)">
+            <label for="nim">NIM:</label>
+            <input type="text" id="nim" name="nim" placeholder="Masukkan NIM" required>
+            <span id="nimError" class="error"></span>
+
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" name="nama" placeholder="Masukkan Nama" required>
+            <span id="namaError" class="error"></span>
+
+            <label for="prodi">Program Studi:</label>
+            <select id="prodi" name="prodi" required>
+                <option value="">-- Pilih Prodi --</option>
+                <option value="Teknik Informatika">Teknik Informatika</option>
+                <option value="Sistem Informasi">Sistem Informasi</option>
+                <option value="Teknik Elektro">Teknik Elektro</option>
+                <option value="Teknik Sipil">Teknik Sipil</option>
+                <option value="Arsitektur">Arsitektur</option>
+                <option value="Bioteknologi">Bioteknologi</option>
+                <option value="Farmasi">Farmasi</option>
+                <option value="Psikologi">Psikologi</option>
+                <option value="Manajemen">Manajemen</option>
+ 
+            </select>
+            <span id="prodiError" class="error"></span>
+
+            <label for="deskripsi">Deskripsi:</label>
+            <textarea id="deskripsi" name="deskripsi" placeholder="Tambahkan deskripsi tentang mahasiswa"></textarea>
+            <span id="deskripsiError" class="error"></span>
+
+            <button type="submit">Tambahkan Data</button>
+        </form>
+    </div>
+
+    <script>
+        // Fungsi validasi form
+        function validateForm(event) {
+            resetErrors();
+
+            const nim = document.getElementById('nim').value;
+            const nama = document.getElementById('nama').value;
+            const prodi = document.getElementById('prodi').value;
+            const deskripsi = document.getElementById('deskripsi').value;
+
+            let isValid = true;
+
+            // Validasi NIM
+            if (nim.length < 8 || isNaN(nim)) {
+                document.getElementById('nimError').textContent = 'NIM harus berupa angka dan minimal 8 karakter!';
+                isValid = false;
+            }
+
+            // Validasi Nama
+            if (!/^[a-zA-Z\s]+$/.test(nama)) {
+                document.getElementById('namaError').textContent = 'Nama hanya boleh mengandung huruf dan spasi!';
+                isValid = false;
+            }
+
+            // Validasi Prodi
+            if (prodi === '') {
+                document.getElementById('prodiError').textContent = 'Pilih program studi!';
+                isValid = false;
+            }
+
+            // Validasi Deskripsi (opsional)
+            if (deskripsi.length > 0 && deskripsi.length < 10) {
+                document.getElementById('deskripsiError').textContent = 'Deskripsi harus lebih dari 10 karakter!';
+                isValid = false;
+            }
+
+            if (isValid) {
+                alert('Form berhasil dikirim!');
+                return true; // Form dikirim
+            } else {
+                alert('Terdapat kesalahan, silakan perbaiki input!');
+                return false; // Form tidak dikirim
+            }
+        }
+
+        // Fungsi untuk mereset error
+        function resetErrors() {
+            document.getElementById('nimError').textContent = '';
+            document.getElementById('namaError').textContent = '';
+            document.getElementById('prodiError').textContent = '';
+            document.getElementById('deskripsiError').textContent = '';
+        }
+    </script>
+
+</body>
+</html>
